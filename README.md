@@ -51,6 +51,10 @@
 - **Email**: test@example.com
 - **Password**: password
 
+## Main Routes
+- **/login**: Admin login page
+- **/**: Home page that displays the product list
+
 ## Project Structure
 
 ### Core Module
@@ -99,3 +103,28 @@ This project follows a modular architecture with:
 
 5. **Media Handling**:
    - Define media collections in your controller's `$mediaCollections` property
+   - Implement the following methods in your model that extends `BaseModel`:
+     ```php
+     // Register media collections from request
+     public function registerMediaCollection(array $collections): void
+     {
+         try {
+             foreach ($collections as $collectionName) {
+                 $this->addMediaFromRequest($collectionName)->toMediaCollection('image');
+             }
+         } catch (\Exception $e) {
+             Log::error('Error registering media collection: ' . $e->getMessage(), request()->all());
+         }
+     }
+
+     // Get the URL of the first media item in a collection
+     public function getFirstMediaUrl(string $collectionName = 'image', string $conversionName = ''): string
+     {
+         $getMedia = $this->getMedia($collectionName)->first()?->getUrl();
+         if ($getMedia) {
+             return $getMedia;
+         }
+
+         return '';
+     }
+     ```
