@@ -1,0 +1,6 @@
+{
+    "Product": true,
+    "Category": true,
+    "Log": true,
+    "Order": true
+}
